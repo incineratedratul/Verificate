@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Company Profile | Company Dashboard</title>
+    <link rel="stylesheet" href="companyprofile.css">
+  </head>
+  <body>
+    <nav>
+      <ul>
+        <li><a href="companysearchuser.html">Search User</a></li>
+        <li><a href="companysearchcertificate.html">Upload Certificate</a></li>
+        <li><a href="companyprofile.html">Company Profile</a></li>
+        <li><a href="companynotification.html">Profile</a></li>
+        <li><a href="login.html">Logout</a></li>
+      </ul>
+    </nav>
+
+    <div class="container">
+      <h1>Company Profile</h1>
+      <form>
+        <label for="name">Company Name</label>
+        <input type="text" id="name" name="name" value="Acme Inc.">
+
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" value="info@acmeinc.com">
+
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone" value="+1 123-456-7890">
+
+        <label for="address">Address</label>
+        <textarea id="address" name="address">123 Main St. Anytown, USA 12345</textarea>
+
+        <button type="submit">Save Changes</button>
+      </form>
+    </div>
+
+    <script> // Get DOM elements
+        const nameInput = document.getElementById('name');
+        const emailInput = document.getElementById('email');
+        const descriptionInput = document.getElementById('description');
+        const saveBtn = document.getElementById('saveBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+        
+        // Fetch company data from API
+        fetch('/api/company')
+          .then(response => response.json())
+          .then(data => {
+            // Fill in input fields with current data
+            nameInput.value = data.name;
+            emailInput.value = data.email;
+            descriptionInput.value = data.description;
+          })
+          .catch(error => {
+            console.error('Error fetching company data:', error);
+          });
+        
+        // Save button click event listener
+        saveBtn.addEventListener('click', () => {
+          const updatedData = {
+            name: nameInput.value,
+            email: emailInput.value,
+            description: descriptionInput.value
+          };
+        
+          // Send updated data to API
+          fetch('/api/company', {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updatedData)
+          })
+            .then(response => {
+              if (response.ok) {
+                // Redirect to company dashboard if successful
+                window.location.href = '/dashboard/company';
+              } else {
+                console.error('Error updating company data:', response.status);
+              }
+            })
+            .catch(error => {
+              console.error('Error updating company data:', error);
+            });
+        });
+        
+        // Cancel button click event listener
+        cancelBtn.addEventListener('click', () => {
+          // Redirect to company dashboard without making any changes
+          window.location.href = '/dashboard/company';
+        });
+        </script>
+  </body>
+</html>

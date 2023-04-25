@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Notifications | Verificate</title>
+    <style>
+        nav {
+            background-color: #0077B5;
+            color: white;
+            padding: 30px 0;
+          }
+          
+          nav ul {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+          }
+          
+          nav li {
+            margin-right: 30px;
+          }
+          
+          nav a {
+            color: white;
+            text-decoration: none;
+          }
+          
+          h1 {
+            text-align: center;
+            margin-bottom: 30px;
+          }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F3F3F3;
+          }
+          
+          h1 {
+            text-align: center;
+            font-size: 36px;
+            color: #0077B5;
+            margin-top: 50px;
+          }
+          
+          .notification-container {
+            max-width: 600px;
+            margin: 0 auto;
+          }
+          
+          .notification {
+            background-color: #FFFFFF;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+          }
+          
+          .notification h2 {
+            font-size: 24px;
+            color: #0077B5;
+            margin-top: 0;
+            margin-bottom: 10px;
+          }
+          
+          .notification p {
+            font-size: 18px;
+            color: #666666;
+            margin-top: 0;
+          }
+          
+          .timestamp {
+            font-size: 14px;
+            color: #AAAAAA;
+            float: right;
+          }
+          
+          
+    </style>
+    <nav>
+      <ul>
+        <li><a href="universityrequests.html">View Requests</a></li>
+        <li><a href="universityacceptedrequest.html">Accepted Requests</a></li>
+        <li><a href="universitynotifications.html">Notifications</a></li>
+        <li><a href="logout.html">Logout</a></li>
+      </ul>
+    </nav>
+  </head>
+  <body>
+    <h1>Notifications</h1>
+    <div class="notification-container">
+      <div class="notification">
+        <h2>New certificate uploaded</h2>
+        <p>A new certificate has been Requested.</p>
+        <span class="timestamp">3 hours ago</span>
+      </div>
+      <div class="notification">
+        <h2>Certificate verification complete</h2>
+        <p>User Tasfia2321 has requested for uploading a clear certificate</p>
+        <span class="timestamp">Yesterday</span>
+      </div>
+    </div>
+    <script>
+        // Sample code for server.js
+
+const express = require('express');
+const app = express();
+const port = 3000;
+
+// Middleware to parse JSON request bodies
+app.use(express.json());
+
+// Route to handle GET requests for notifications
+app.get('/notifications', (req, res) => {
+  // Code to fetch notifications from database
+  // and send them back as a JSON response
+  const notifications = [
+    {
+      id: 1,
+      title: 'New certificate uploaded',
+      description: 'A new certificate has been requested.',
+      timestamp: '3 hours ago'
+    },
+    {
+      id: 2,
+      title: 'Certificate verification complete',
+      description: 'User Tasfia2321 has requested for uploading a clear certificate',
+      timestamp: 'Yesterday'
+    }
+  ];
+  res.json(notifications);
+});
+
+// Route to handle PUT requests to mark notifications as read
+app.put('/notifications/:id/read', (req, res) => {
+  // Code to update the status of a notification in the database
+  // and send back a confirmation message
+  const notificationId = req.params.id;
+  // Code to update the status of the notification with the given ID
+  res.json({ message: `Notification ${notificationId} marked as read` });
+});
+
+// Route to handle DELETE requests for notifications
+app.delete('/notifications/:id', (req, res) => {
+  // Code to delete a notification from the database
+  // and send back a confirmation message
+  const notificationId = req.params.id;
+  // Code to delete the notification with the given ID
+  res.json({ message: `Notification ${notificationId} deleted` });
+});
+
+// Start the server
+app.listen(port, () => {
+  console.log(`Server listening at http://localhost:${port}`);
+});
+
+    </script>
+  </body>
+</html>

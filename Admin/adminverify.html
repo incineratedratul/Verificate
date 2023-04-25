@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Send Certificate for Verification</title>
+    <style>
+        nav {
+            background-color: #0077B5;
+            color: white;
+            padding: 30px 0;
+          }
+          
+          nav ul {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+          }
+          
+          nav li {
+            margin-right: 30px;
+          }
+          
+          nav a {
+            color: white;
+            text-decoration: none;
+          }
+          
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 30px;
+          }
+          
+          form {
+            display: flex;
+            flex-direction: column;
+            max-width: 600px;
+            margin: 0 auto;
+          }
+          
+          label {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+          }
+          
+          input,
+          textarea {
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+          }
+          
+          button[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+          }
+          
+          button[type="submit"]:hover {
+            background-color: #3e8e41;
+          }
+          
+    </style>
+  </head>
+  <body>
+    <nav>
+        <ul>
+          <li><a href="adminrequests.html">View Requests</a></li>
+          <li><a href="adminverify.html">Verify Certificates</a></li>
+          <li><a href="adminnotification.html">Notifications</a></li>
+          <li><a href="adminpushtoblockchain.html">Push to Blockchain</a></li>
+          <li><a href="adminipfs.html">IPFS</a></li>
+          <li><a href="login.html">Logout</a></li>
+        </ul>
+      </nav>
+    <h1>Send Certificate for Verification</h1>
+    <form id="certificate-form">
+      <div>
+        <label for="certificate-file">Certificate File:</label>
+        <input type="file" id="certificate-file" name="certificate-file">
+      </div>
+      <div>
+        <label for="recipient-email">Recipient Email:</label>
+        <input type="email" id="recipient-email" name="recipient-email">
+      </div>
+      <div>
+        <label for="message-body">Message:</label>
+        <textarea id="message-body" name="message-body"></textarea>
+      </div>
+      <button type="submit">Send Email</button>
+    </form>
+    <script>
+        const form = document.querySelector('form');
+const fileInput = document.querySelector('input[type="file"]');
+const emailInput = document.querySelector('input[type="email"]');
+const messageInput = document.querySelector('textarea');
+const submitBtn = document.querySelector('button[type="submit"]');
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  // Get the uploaded file
+  const file = fileInput.files[0];
+  if (!file) {
+    alert('Please select a file');
+    return;
+  }
+
+  // Get the email address
+  const email = emailInput.value.trim();
+  if (!email) {
+    alert('Please enter a valid email address');
+    return;
+  }
+
+  // Get the message
+  const message = messageInput.value.trim();
+  if (!message) {
+    alert('Please enter a message');
+    return;
+  }
+
+  // Upload the file to IPFS
+  const ipfsFile = await uploadToIpfs(file);
+
+  // Send the email
+  const response = await sendEmail(email, message, ipfsFile.hash);
+  if (response.success) {
+    alert('Email sent successfully');
+  } else {
+    alert('Email sending failed');
+  }
+
+  // Reset the form
+  form.reset();
+});
+
+// Upload file to IPFS
+async function uploadToIpfs(file) {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const response = await fetch('http://<IPFS_NODE_IP>:5001/api/v0/add', {
+    method: 'POST',
+    body: formData,
+  });
+
+  const data = await response.json();
+  return { hash: data.Hash, url: `https://ipfs.io/ipfs/${data.Hash}` };
+}
+
+// Send email
+async function sendEmail(email, message, ipfsHash) {
+  const response = await fetch('/send-email', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, message, ipfsHash }),
+  });
+
+  return response.json();
+}
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Verificate</title>
+
+    <link rel="stylesheet" href="homepage.css">
+  </head>
+  <body>
+    <h1>Hello <span id="username-placeholder">user</span>, welcome to Verificate</h1>
+    <p>Please choose one of the following options</p>
+    <nav>
+      <ul>
+        <li><button onclick="window.location.href='applicantcertificates.html'">My Certificates</button></li>
+        <li><button onclick="window.location.href='applicantupload.html'">Upload Certificates</button></li>
+        <li><button onclick="window.location.href='applicantprofile.html'">My Profile</button></li>
+        <li><button onclick="window.location.href='applicantnotification.html'">Notifications</button></li>
+        <li><button onclick="window.location.href='login.html'">Logout</button></li>
+      </ul>
+    </nav>
+    
+    <script>
+      // Fetch the username from the server
+      fetch('/username')
+        .then(response => response.json())
+        .then(data => {
+          // Get the placeholder element and set its text to the username
+          const usernamePlaceholder = document.getElementById('username-placeholder');
+          usernamePlaceholder.innerText = data.username;
+        })
+        .catch(error => console.error(error));
+
+      // Add the mouseover and mouseout event listeners to the buttons
+      const buttons = document.querySelectorAll('button');
+      buttons.forEach(button => {
+        button.addEventListener('mouseover', () => {
+          button.style.backgroundColor = '#005D8F';
+        });
+        button.addEventListener('mouseout', () => {
+          button.style.backgroundColor = '#0077B5';
+        });
+      });
+    </script>
+  </body>
+</html>

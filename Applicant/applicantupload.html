@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Certificate Upload Form</title>
+    <style>
+      nav {
+        background-color: #0077B5;
+        color: white;
+        padding: 30px 0;
+      }
+      
+      nav ul {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      
+      nav li {
+        margin-right: 30px;
+      }
+      
+      nav a {
+        color: white;
+        text-decoration: none;
+      }
+      
+      h1 {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+      }
+      
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      
+      h1 {
+        text-align: center;
+        margin-top: 0;
+      }
+      
+      form {
+        display: flex;
+        flex-direction: column;
+      }
+      
+      label {
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+      
+      input[type="text"],
+      select {
+        padding: 10px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        border: none;
+        background-color: #f9f9f9;
+        font-size: 16px;
+      }
+      
+      input[type="submit"] {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      
+      input[type="submit"]:hover {
+        background-color: #3e8e41;
+      }
+      
+      .error {
+        color: red;
+        margin-bottom: 10px;
+      }
+      
+      .other-cert-type {
+        display: none;
+      }
+      
+      .other-inst-type {
+        display: none;
+      }
+      
+      .show {
+        display: block;
+      }
+      
+    </style>
+  </head>
+  <body>
+    <nav>
+      <ul>
+        <li><a href="applicantcertificates.html">My Certificates</a></li>
+			  <li><a href="applicantupload.html">Upload Certificates</a></li>
+			  <li><a href="applicantprofile.html">My Profile</a></li>
+			  <li><a href="applicantnotification.html">Notifications</a></li>
+			  <li><a href="login.html">Logout</a></li>
+      </ul>
+      </nav>
+    <h1>Certificate Upload Form</h1>
+    
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+      <label for="fullName">Full Name:</label>
+      <input type="text" name="fullName" required><br>
+
+      <label for="certificateName">Certificate Name:</label>
+      <input type="text" name="certificateName" required><br>
+
+      <label for="certificateType">Certificate Type:</label>
+      <select name="certificateType" id="certificateType" onchange="showOther()">
+        <option value="Transcript">Transcript</option>
+        <option value="Probational">Probational</option>
+        <option value="HSC">HSC</option>
+        <option value="SSC">SSC</option>
+        <option value="O-Levels">O-Levels</option>
+        <option value="A-Levels">A-Levels</option>
+        <option value="MOI">MOI</option>
+        <option value="Studentship">Studentship</option>
+        <option value="Other">Other</option>
+      </select>
+      <div id="otherCertificateType" style="display: none;">
+        <label for="otherCertificateTypeInput">Other Certificate Type:</label>
+        <input type="text" name="otherCertificateTypeInput">
+      </div><br>
+
+      <label for="institute">Institute:</label>
+      <select name="institute" id="institute" onchange="showOtherInstitute()">
+        <option value="British Council">British Council</option>
+        <option value="University">University</option>
+        <option value="School">School</option>
+        
+        <option value="Other">Other</option>
+      </select>
+      <div id="otherInstitute" style="display: none;">
+        <label for="otherInstituteInput">Other Institute:</label>
+        <input type="text" name="otherInstituteInput">
+      </div><br>
+
+      <label for="possibleVerifier">Possible Verifier:</label>
+      <input type="text" name="possibleVerifier" required><br>
+
+      <label for="certificateFile">Certificate File:</label>
+      <input type="file" name="certificateFile" accept="application/pdf" required><br>
+
+      <input type="submit" value="Submit">
+    </form>
+
+    <script>
+      function showOther() {
+        var certificateTypeSelect = document.getElementById("certificateType");
+        var otherCertificateTypeDiv = document.getElementById("otherCertificateType");
+        if (certificateTypeSelect.value == "Other") {
+          otherCertificateTypeDiv.style.display = "block";
+        } else {
+          otherCertificateTypeDiv.style.display = "none";
+        }
+      }
+
+      function showOtherInstitute() {
+        var instituteSelect = document.getElementById("institute");
+        var otherInstituteDiv = document.getElementById("otherInstitute");
+        if (instituteSelect.value == "Other") {
+          otherInstituteDiv.style.display = "block";
+        } else {
+          otherInstituteDiv.style.display = "none";
+        }
+      }
+    </script>
+    <script>
+      $(document).ready(function() {
+        // Handle form submission
+        $("#certificate-form").submit(function(event) {
+          event.preventDefault(); // Prevent default form submission
+          // Send form data to server using AJAX
+          $.ajax({
+            url: "/upload-certificate",
+            type: "POST",
+            data: new FormData(this),
+            processData: false,
+            contentType: false,
+            success: function(response) {
+              // Display success message and clear form
+              alert("Certificate uploaded successfully!");
+              $("#certificate-form")[0].reset();
+            },
+            error: function(error) {
+              // Display error message
+              alert("Error uploading certificate: " + error.responseText);
+            }
+          });
+        });
+      });
+      
+    </script>
+  </body>
+</html>

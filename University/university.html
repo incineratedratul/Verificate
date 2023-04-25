@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Verificate</title>
+
+    <link rel="stylesheet" href="homepage.css">
+  </head>
+  <body>
+    
+    <h1>Hello ULAB, welcome to Verificate</h1>
+    <p>Please choose one of the following options</p>
+    <nav>
+        <ul>
+          <li><button onclick="window.location.href='universityrequests.html'">View Requests</a></li>
+          <li><button onclick="window.location.href='universityacceptedrequest.html'">Accepted Requests</a></li>
+          <li><button onclick="window.location.href='universitynotifications.html'">Notifications</a></li>
+          <li><button onclick="window.location.href='logout.html'">Logout</a></li>
+        </ul>
+    </nav>
+    <script>
+      const buttons = document.querySelectorAll('button');
+      buttons.forEach(button => {
+        button.addEventListener('mouseover', () => {
+          button.style.backgroundColor = '#005D8F';
+        });
+        button.addEventListener('mouseout', () => {
+          button.style.backgroundColor = '#0077B5';
+        });
+      });
+    </script>
+  </body>
+</html>

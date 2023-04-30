@@ -1,259 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    
-	<title>Global IPFS</title>
-	<style>
-        nav {
-            background-color: #0077B5;
-            color: white;
-            padding: 30px 0;
-          }
-          
-          nav ul {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            list-style: none;
-            margin: 0;
-            padding: 0;
-          }
-          
-          nav li {
-            margin-right: 30px;
-          }
-          
-          nav a {
-            color: white;
-            text-decoration: none;
-          }
-          
-          h1 {
-            text-align: center;
-            margin-bottom: 30px;
-          }
-        body {
-            background-color: #f2f2f2;
-            font-family: Arial, sans-serif;
-          }
-          
-          .container {
-            margin: 0 auto;
-            max-width: 800px;
-            padding: 20px;
-          }
-          
-          .header {
-            background-color: #333;
-            color: #fff;
-            padding: 20px;
-            text-align: center;
-          }
-          
-          .header h1 {
-            margin: 0;
-          }
-          
-          .form-container {
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.2);
-            margin-top: 20px;
-            padding: 20px;
-          }
-          
-          .form-group {
-            margin-bottom: 20px;
-          }
-          
-          .form-group label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-          }
-          
-          .form-group input[type="file"] {
-            margin-top: 5px;
-          }
-          
-          .form-group input[type="text"],
-          .form-group textarea {
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            font-size: 16px;
-            padding: 10px;
-            width: 100%;
-          }
-          
-          .form-group button {
-            background-color: #333;
-            border: none;
-            border-radius: 5px;
-            color: #fff;
-            cursor: pointer;
-            font-size: 16px;
-            padding: 10px;
-            transition: background-color 0.3s ease;
-          }
-          
-          .form-group button:hover {
-            background-color: #555;
-          }
-          
-          .file-list {
-            margin-top: 20px;
-          }
-          
-          .file-list ul {
-            list-style: none;
-            padding: 0;
-          }
-          
-          .file-list ul li {
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            overflow: hidden;
-            padding: 10px;
-          }
-          
-          .file-list ul li span {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-          }
-          
-          .file-list ul li button {
-            background-color: #333;
-            border: none;
-            border-radius: 5px;
-            color: #fff;
-            cursor: pointer;
-            float: right;
-            font-size: 14px;
-            padding: 5px 10px;
-            transition: background-color 0.3s ease;
-          }
-          
-          .file-list ul li button:hover {
-            background-color: #555;
-          }
-          
-          .message {
-            color: #f00;
-            font-size: 14px;
-            margin-top: 10px;
-          }
-          
-  
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
 </head>
 <body>
-    <nav>
-        <ul>
-          <li><a href="adminrequests.html">View Requests</a></li>
-          <li><a href="adminverify.html">Verify Certificates</a></li>
-          <li><a href="adminnotification.html">Notifications</a></li>
-          <li><a href="adminpushtoblockchain.html">Push to Blockchain</a></li>
-          <li><a href="adminipfs.html">IPFS</a></li>
-          <li><a href="login.html">Logout</a></li>
-        </ul>
-      </nav>
-	<h1>Global IPFS</h1>
-	<h2>View Files</h2>
-	<form>
-		<button id="view-button">View</button>
-	</form>
-	<table id="file-list">
-		<tr>
-			<th>File Name</th>
-			<th>IPFS Hash</th>
-			<th>Action</th>
-		</tr>
-	</table>
-	<h2>Upload File</h2>
-	<form id="upload-form">
-		<label for="file-input">File:</label>
-		<input type="file" id="file-input">
-		<button type="submit" id="upload-button">Upload</button>
-	</form>
-	<h2>Download File</h2>
-	<form id="download-form">
-		<label for="hash-input">IPFS Hash:</label>
-		<input type="text" id="hash-input">
-		<button type="submit" id="download-button">Download</button>
-	</form>
-	<script src="https://cdn.jsdelivr.net/npm/ipfs/dist/index.min.js"></script>
-
-	<script>
-        const ipfsClient = require('ipfs-http-client');
-const express = require('express');
-const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
-
-// Create IPFS client instance
-const ipfs = new IpfsHttpClient({
-    host: 'ipfs.infura.io',
-    port: 5001,
-    protocol: 'https'
-  });
-// Create Express app
-const app = express();
-
-// Set up Multer middleware for file upload
-const upload = multer({
-  dest: 'uploads/'
-});
-
-// Serve static files in the "public" folder
-app.use(express.static('public'));
-
-// Handle file upload form submission
-app.post('/upload', upload.single('file'), (req, res) => {
-  const file = req.file;
-
-  // Add file to IPFS
-  ipfs.add(fs.createReadStream(file.path), (err, result) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send('Failed to upload file to IPFS');
-      return;
-    }
-
-    // Remove temporary file from local filesystem
-    fs.unlinkSync(file.path);
-
-    // Redirect user to the file's IPFS URL
-    const ipfsUrl = `https://ipfs.io/ipfs/${result[0].hash}`;
-    res.redirect(ipfsUrl);
-  });
-});
-
-// Handle file download request
-app.get('/download/:hash', (req, res) => {
-  const hash = req.params.hash;
-
-  // Retrieve file from IPFS
-  ipfs.cat(hash, (err, stream) => {
-    if (err) {
-      console.error(err);
-      res.status(404).send('File not found on IPFS');
-      return;
-    }
-
-    // Pipe IPFS stream to HTTP response
-    res.setHeader('Content-disposition', `attachment; filename=${hash}`);
-    stream.pipe(res);
-  });
-});
-
-// Start server
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
-});
-
-    </script>
+    
+    <form action="/profile" method="post" enctype="multipart/form-data">
+        <input type="file" name="avatar" />
+        <button>upload</button>
+      </form>
+      <input id="filehash"type="text">
+      <button onclick="loadDoc()">download</button>
 </body>
+    <script>
+        function loadDoc() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                // document.getElementById("demo").innerHTML = this.responseText;
+                console.log(this);
+                window.open(this.responseURL);
+                }
+            };
+            console.log(document.getElementById("filehash").value)
+            xhttp.open("GET", "download/"+document.getElementById("filehash").value, true);
+            xhttp.send();
+        }
+    </script>
 </html>

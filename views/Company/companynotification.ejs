@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>User Search</title>
+   <style>
+    nav {
+      background-color: #0077B5;
+      color: white;
+      padding: 10px 0;
+    }
+    
+    nav ul {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    
+    nav li {
+      margin-right: 20px;
+    }
+    
+    nav a {
+      color: white;
+      text-decoration: none;
+    }
+    
+    .container {
+      margin: 0 auto;
+      max-width: 600px;
+    }
+    
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      
+    }
+    
+    form {
+      display: flex;
+      flex-direction: column;
+      margin: 20px auto;
+      max-width: 600px;
+    }
+    
+    label {
+      margin-bottom: 5px;
+    }
+    
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    textarea {
+      padding: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+    }
+    
+    button[type="submit"] {
+      background-color: #0077B5;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+    }
+    
+    button[type="submit"]:hover {
+      background-color: #005D8F;
+    }
+    
+    
+    #search-results {
+      margin: 20px auto;
+      max-width: 600px;
+    }
+    
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    
+    li {
+      margin-bottom: 5px;
+    }
+    
+    a {
+      text-decoration: none;
+      color: #0077B5;
+    }
+    
+    a:hover {
+      text-decoration: underline;
+    }
+    
+   </style>
+  </head>
+  <body>
+    <nav>
+    <ul>
+      <li><a href="/companysearchuser">Search User</a></li>
+      <li><a href="/companysearchcertificate">Upload Certificate</a></li>
+      <li><a href="/companyprofile.ejs">Company Profile</a></li>
+      <li><a href="/companynotification">Profile</a></li>
+      <li><a href="/logout">Logout</a>
+    </ul>
+  </nav>
+    <h1>User Search</h1>
+    <form id="search-form">
+      <label for="user-id">User ID:</label>
+      <input type="text" id="user-id" name="userId" required>
+      <button type="submit">Search</button>
+    </form>
+    <div id="search-results"></div>
+    <script>
+      const searchForm = document.getElementById('search-form');
+      const searchResults = document.getElementById('search-results');
+
+      searchForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        const userId = document.getElementById('user-id').value;
+
+        fetch(`/api/user-search/${userId}`)
+          .then(response => response.json())
+          .then(data => {
+            if (data.length === 0) {
+              searchResults.textContent = 'No user found.';
+            } else if (data.length === 1) {
+              const user = data[0];
+              searchResults.innerHTML = `
+                <h2>User Profile</h2>
+                <p>Name: ${user.name}</p>
+                <p>Email: ${user.email}</p>
+                <p>Phone: ${user.phone}</p>
+                <p>Address: ${user.address}</p>
+                <p>City: ${user.city}</p>
+                <p>State: ${user.state}</p>
+                <p>Country: ${user.country}</p>
+              `;
+            } else {
+              const users = data.map(user => `<li><a href="/users/${user.id}">${user.name}</a></li>`).join('');
+              searchResults.innerHTML = `
+                <h2>Multiple Users Found</h2>
+                <ul>${users}</ul>
+              `;
+            }
+          })
+          .catch(error => {
+            console.error(error);
+            searchResults.textContent = 'Error searching for user.';
+          });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval'; img-src data:;">
+
+    <title>Verificate</title>
+    <link rel="stylesheet" href="/public/homepage.css">
+  </head>
+  <body>
+    <h1>Hello <span id="username-placeholder"><%= username %></span>, welcome to Verificate</h1>
+    <p>Please choose one of the following options</p>
+    <nav>
+      <ul>
+        <li><a href="/applicantcertificates"><button>My Certificates</button></a></li>
+        <li><a href="/applicantupload"><button>Upload Certificates</button></a></li>
+        <li><a href="/applicantprofile"><button>My Profile</button></a></li>
+        <li><a href="/applicantnotification"><button>Notifications</button></a></li>
+        <li><button onclick="window.location.href='/logout'">Logout</button></li>
+      </ul>
+    </nav>
+    
+    <script>
+      // Add the mouseover and mouseout event listeners to the buttons
+      const buttons = document.querySelectorAll('button');
+      buttons.forEach(button => {
+        button.addEventListener('mouseover', () => {
+          button.style.backgroundColor = '#005D8F';
+        });
+        button.addEventListener('mouseout', () => {
+          button.style.backgroundColor = '#0077B5';
+        });
+      });
+    </script>
+  </body>
+</html>

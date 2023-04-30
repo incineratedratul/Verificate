@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval'; img-src data:;">
+
+    <title>Verificate</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #F3F3F3;
+      }
+      
+      h1 {
+        text-align: center;
+        font-size: 36px;
+        color: #0077B5;
+        margin-top: 50px;
+      }
+      
+      p {
+        text-align: center;
+        font-size: 18px;
+        color: #666666;
+        margin-bottom: 50px;
+      }
+      
+      nav {
+        display: flex;
+        justify-content: center;
+      }
+      
+      ul {
+        list-style: none;
+        display: flex;
+        align-items: center;
+      }
+      
+      li {
+        margin: 0 20px;
+      }
+      
+      button {
+        background-color: #0077B5;
+        color: #FFFFFF;
+        font-size: 16px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out;
+      }
+      
+      button:hover {
+        background-color: #005D8F;
+      }
+    </style>
+  </head>
+  <body>
+   
+    <p>Please choose one of the following options</p>
+    <nav>
+      <ul>
+        <li><a href="/applicantcertificates"><button>My Certificates</button></a></li>
+        <li><a href="/applicantupload"><button>Upload Certificates</button></a></li>
+        <li><a href="/applicantprofile"><button>My Profile</button></a></li>
+        <li><a href="/applicantnotification"><button>Notifications</button></a></li>
+        <li><button onclick="window.location.href='/logout'">Logout</button></li>
+      </ul>
+    </nav>
+    
+    <script>
+      // Add the mouseover and mouseout event listeners to the buttons
+      const buttons = document.querySelectorAll('button');
+      buttons.forEach(button => {
+        button.addEventListener('mouseover', () => {
+          button.style.backgroundColor = '#005D8F';
+        });
+        button.addEventListener('mouseout', () => {
+          button.style.backgroundColor = '#0077B5';
+        });
+      });
+    </script>
+  </body>
+</html>

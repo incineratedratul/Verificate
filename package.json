@@ -1,32 +1,38 @@
 {
-  "name": "randchacha",
-  "version": "1.0.2",
-  "description": "The ChaCha random number generator.",
-  "main": "index.js",
+  "name": "verificate-app",
+  "version": "1.0.0",
+  "description": "This is a app for capstone project",
+  "main": "server.js",
+  "author": "Md. Muhtasim Fuad Fahim <muhtasim.fahim.98@gmail.com>",
   "scripts": {
-    "build": "browserify index.js --standalone randchacha > randchacha_browser.js",
-    "buildmin": "browserify index.js --standalone randchacha | terser -c > randchacha_browser.min.js",
-    "test": "jasmine"
-  },
-  "author": "Ian Coleman",
-  "homepage": "https://github.com/iancoleman/randchacha-js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/iancoleman/randchacha-js.git"
+    "serve": "node server.js",
+    "dev": "nodemon server.js",
+    "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "watch": "npm run development -- --watch",
+    "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --config=node_modules/laravel-mix/setup/webpack.config.js"
   },
   "license": "MIT",
   "dependencies": {
-    "chacha": "^2.1.0",
-    "ipfs": "^0.66.0",
-    "ipfs-core": "^0.18.0",
-    "ipfs-http-client": "^60.0.0",
-    "js-chacha20": "^1.1.0",
-    "randchacha": "^1.0.2"
+    "connect-mongo": "^4.4.0",
+    "connect-mongodb-session": "^2.4.1",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "dotenv": "^8.2.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "express-ejs-layouts": "^2.5.0",
+    "express-session": "^1.17.1",
+    "moment": "^2.29.1",
+    "moralis": "^2.7.1",
+    "mongoose": "^5.11.19",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.2"
   },
   "devDependencies": {
-    "browserify": "^17.0.0",
-    "jasmine": "^3.8.0",
-    "terser": "^5.7.1",
-    "webpack-cli": "^5.0.1"
+    "laravel-mix": "^6.0.13",
+    "nodemon": "^2.0.7",
+    "resolve-url-loader": "3.1.2",
+    "sass": "^1.32.8",
+    "sass-loader": "10.*"
   }
 }
